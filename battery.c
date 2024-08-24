@@ -68,7 +68,10 @@ void Battery_Monitor_Task(void *pvParameters) // This is a task.
                    the shared resource safely. */
             }
         }
+#ifdef _DEBUG_
         Serial_String_New_Line("bat");
+#endif
+
         vTaskDelay(5000 / portTICK_PERIOD_MS); // wait for one second
     }
 }

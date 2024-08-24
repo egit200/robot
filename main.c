@@ -13,15 +13,17 @@
 #include "serial.h"
 #include "ctrl.h"
 
+#define _DEBUG_ 1
+
 #define SOLAR_PANEL_STACK_SIZE 256
 
 /* Structure that will hold the TCB of the task being created. */
-static StaticTask_t blink_task;
+//static StaticTask_t blink_task;
 
 /* Buffer that the task being created will use as its stack. Note this is
  an array of StackType_t variables. The size of StackType_t is dependent on
  the RTOS port. */
-static StackType_t blink_stack[SOLAR_PANEL_STACK_SIZE];
+//static StackType_t blink_stack[SOLAR_PANEL_STACK_SIZE];
 /* Structure that will hold the TCB of the task being created. */
 
 void Ctrl_Task_Blink(void *pvParameters) // This is a task.
@@ -54,8 +56,11 @@ int main(void) {
 	//DDRB = 1 << PIN5;
 
 	Serial_Init();
+
+#ifdef _DEBUG_
 	Serial_String_New_Line("");
 	Serial_String_New_Line("reset");
+#endif
 
 	Battery_Monitor_Init();
 
@@ -65,7 +70,7 @@ int main(void) {
 
 	Controller_Init();
 
-	if (xTaskCreateStatic(Ctrl_Task_Blink, // Function that implements the task. *
+/*	if (xTaskCreateStatic(Ctrl_Task_Blink, // Function that implements the task. *
 			"Blink",                // Text name for the task. *
 			SOLAR_PANEL_STACK_SIZE, // Number of indexes in the xStack array. *
 			(void*) 1,              // Parameter passed into the task. *
@@ -74,8 +79,10 @@ int main(void) {
 			&blink_task) == NULL) {
 		Serial_String_New_Line("error creadno tarea1");
 	}
-
+*/
+#ifdef _DEBUG_
 	Serial_String_New_Line("create");
+#endif
 
 	//Serial_Put(123);
 

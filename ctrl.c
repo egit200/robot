@@ -10,6 +10,7 @@
 #include "ctrl.h"
 #include "panel.h"
 #include "serial.h"
+#include "delay.h"
 
 #define SOLAR_PANEL_STACK_SIZE 192
 
@@ -50,7 +51,7 @@ void Controller_Task(void *parameters) // This is a task.
 		Serial_Put(voltage);
 		Serial_New_Line();
 
-		vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
+		Task_Delay_Seconds(1); // wait for one second
 	}
 }
 

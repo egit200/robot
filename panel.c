@@ -48,10 +48,11 @@ void Solar_Panel_Init() {
 
 void Solar_Panel_Task(void *pvParameters) // This is a task.
 {
-	for (;;) // A Task shall never return or exit.
-			{
+	for (;;)	{
+//#ifdef _DEBUG_
 		Serial_Put_String_Flash(CADENA);
 		Serial_New_Line();
+//#endif
 
 		xSemaphoreTake(solar_panel_semaphore_handle, portMAX_DELAY);
 		solar_panel_voltage++;

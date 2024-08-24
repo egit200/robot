@@ -12,7 +12,7 @@ CFLAGS=-Wall -mmcu=$(MCU) -Os -DF_CPU=16000000UL -I./rtos  -fdata-sections -ffun
 LDFLAGS= 
 
 RTOS=rtos/list.o rtos/tasks.o  rtos/port.o rtos/heap_3.o rtos/queue.o rtos/timers.o rtos/variantHooks.o
-CTRL=battery.o  distance.o serial.o main.o panel.o ctrl.o
+CTRL=battery.o  distance.o serial.o main.o panel.o ctrl.o delay.o
 
 OBJECT_FILES= $(RTOS)  $(CTRL)
 
