@@ -2428,7 +2428,7 @@ static void prvInitialiseNewTask( TaskFunction_t pxTaskCode,
 
 #if ( INCLUDE_vTaskDelay == 1 )
 
-    void Task_Delay( const TickType_t xTicksToDelay )
+    void vTaskDelay( const TickType_t xTicksToDelay )
     {
         BaseType_t xAlreadyYielded = pdFALSE;
 
@@ -3658,7 +3658,7 @@ static BaseType_t prvCreateIdleTasks( void )
 
 /*-----------------------------------------------------------*/
 
-void Task_Start_Scheduler( void )
+void vTaskStartScheduler( void )
 {
     BaseType_t xReturn;
 

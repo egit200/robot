@@ -8,8 +8,9 @@
 #include "semphr.h"
 
 #include "distance.h"
+#include "serial.h"
 
-#define SOLAR_PANEL_STACK_SIZE 256
+#define SOLAR_PANEL_STACK_SIZE 192
 
 /* Structure that will hold the TCB of the task being created. */
 static StaticTask_t distance_sensor_task;
@@ -29,7 +30,7 @@ void Distance_Sensor_Init()
     semaphore_handle = xSemaphoreCreateMutexStatic(&mutex);
 
     xTaskCreateStatic(
-        Distance_Sensor_Init,   /* Function that implements the task. */
+        Distance_Sensor_Task,   /* Function that implements the task. */
         "panel",                /* Text name for the task. */
         SOLAR_PANEL_STACK_SIZE, /* Number of indexes in the xStack array. */
         (void *)1,              /* Parameter passed into the task. */
@@ -69,7 +70,8 @@ void Distance_Sensor_Task(void *pvParameters) // This is a task.
             }
         }
 
-        Task_Delay(1000 / portTICK_PERIOD_MS); // wait for one second
+        Serial_String_New_Line("dist");
+        vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
     }
 }
 

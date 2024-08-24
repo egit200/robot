@@ -7,8 +7,9 @@
 
 #include "semphr.h"
 #include "battery.h"
+#include "serial.h"
 
-#define SOLAR_PANEL_STACK_SIZE 256
+#define SOLAR_PANEL_STACK_SIZE 192
 
 /* Structure that will hold the TCB of the task being created. */
 static StaticTask_t battery_monitor_task;
@@ -67,8 +68,8 @@ void Battery_Monitor_Task(void *pvParameters) // This is a task.
                    the shared resource safely. */
             }
         }
-
-        Task_Delay(1000 / portTICK_PERIOD_MS); // wait for one second
+        Serial_String_New_Line("bat");
+        vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
     }
 }
 

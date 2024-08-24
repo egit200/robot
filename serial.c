@@ -19,6 +19,9 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
+#include <avr/pgmspace.h>
+
+#include <stdio.h>
 
 #include "serial.h"
 #include "portmacro.h"
@@ -83,18 +86,20 @@ void Serial_String_New_Line(char *s)
 
 void Serial_Put(uint8_t number)
 {
-	int p;
-	int d;
-	if (number / 100 > 0)
-	{
+	char str[26];
+    sprintf(str, "%d", number);
+    Serial_String(str);
+}
 
-		p = (number - (number % 100) * 100) + '0';
-		Serial_Char(p);
-	}
+void Serial_Put_String_Flash(const char *cadena)
+{
+	for (int i = 0; i < strlen_P(cadena); i++) {
+		Serial_Char((unsigned char)pgm_read_byte(&cadena[i]));
+	  }
+}
 
-	if (p / 10 > 0)
-	{
-		d = (p - (p % 10) * 10) + '0';
-		Serial_Char(p);
-	}
+void Serial_Put_Long(uint16_t number) {
+	char str[26];
+    sprintf(str, "%d", number);
+    Serial_String(str);
 }

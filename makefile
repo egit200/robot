@@ -1,18 +1,20 @@
-#CC=/opt/avr-gcc-gnat-7.3.0/bin/avr-gcc
+
 CC=/usr/bin/avr-gcc
 OBJCOPY=/usr/bin/avr-objcopy
 
-#CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p
 PORT=/dev/ttyUSB0
 MCU=atmega328p
-#CFLAGS=-g -Wall -mcall-prologues -mmcu=$(MCU) -Os -DF_CPU=16000000UL -std=gnu99 -ffunction-sections -fdata-sections
-CFLAGS=-g -Wall -mcall-prologues -mmcu=$(MCU) -Os -DF_CPU=16000000UL -std=gnu99 -ffunction-sections -fdata-sections
-#LDFLAGS=-Wl,-gc-sections -Wl,-relax 
-LDFLAGS= -Wl,-relax 
 
-CTRL=battery.o panel.o distance.o serial.o
-OBJECT_FILES=list.o tasks.o  port.o heap_3.o queue.o timers.o main.o task-priority.o $(CTRL)
-#OBJECT_FILES=main2.o serial.o 
+#CFLAGS=-g -Wall -mcall-prologues -mmcu=$(MCU) -Os -DF_CPU=16000000UL -std=gnu99 -ffunction-sections -fdata-sections
+CFLAGS=-Wall -mmcu=$(MCU) -Os -DF_CPU=16000000UL -I./rtos  -fdata-sections -ffunction-sections
+#LDFLAGS=-Wl,-gc-sections -Wl,-relax 
+#LDFLAGS= -Wl,-relax 
+LDFLAGS= 
+
+RTOS=rtos/list.o rtos/tasks.o  rtos/port.o rtos/heap_3.o rtos/queue.o rtos/timers.o rtos/variantHooks.o
+CTRL=battery.o  distance.o serial.o main.o panel.o
+
+OBJECT_FILES= $(RTOS)  $(CTRL)
 
 ex.hex: ex.elf 
 	${OBJCOPY} -O ihex -R .eeprom ex.elf ex.hex

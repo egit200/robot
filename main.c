@@ -5,6 +5,8 @@
 #include <avr/sleep.h>
 #include <avr/wdt.h>
 
+#include <util/delay.h>
+
 #include "battery.h"
 #include "panel.h"
 #include "distance.h"
@@ -19,6 +21,8 @@ static StaticTask_t blink_task;
    an array of StackType_t variables. The size of StackType_t is dependent on
    the RTOS port. */
 static StackType_t blink_stack[SOLAR_PANEL_STACK_SIZE];
+/* Structure that will hold the TCB of the task being created. */
+
 
 void Ctrl_Task_Blink(void *pvParameters) // This is a task.
 {
@@ -28,89 +32,60 @@ void Ctrl_Task_Blink(void *pvParameters) // This is a task.
 
   for (;;) // A Task shall never return or exit.
   {
-    PORTB ^= (1 << PIN5);
+   // PORTB ^= (1 << PIN5);
     // digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-    Task_Delay(1000 / portTICK_PERIOD_MS); // wait for one second
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
                                            // digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-    PORTB ^= (1 << PIN5);
-    Task_Delay(3000 / portTICK_PERIOD_MS); // wait for one second
-    Serial_String_New_Line("hola");
+   // PORTB ^= (1 << PIN5);
+    vTaskDelay(3000 / portTICK_PERIOD_MS); // wait for one second
+    TickType_t ticks = xTaskGetTickCount();
+    Serial_Put_Long(ticks);
+    Serial_String(" " );
+        Serial_String_New_Line("hola");
+
   }
 }
 
+
+int main(void) __attribute__ ((OS_main));
 // the setup function runs once when you press reset or power the board
 int main(void)
 {
 
-  DDRB = 1 << PIN5;
+	  //__malloc_heap_end = (char *)(RAMEND - __malloc_margin);
+  //DDRB = 1 << PIN5;
 
   Serial_Init();
   Serial_String_New_Line("");
   Serial_String_New_Line("reset");
 
-  // Battery_Monitor_Init();
+   Battery_Monitor_Init();
 
   Solar_Panel_Init();
 
-  // Distance_Sensor_Init();
+   Distance_Sensor_Init();
 
-  /*if (xTaskCreateStatic(
-          Ctrl_Task_Blink,        /* Function that implements the task. *
-          "Blink",                /* Text name for the task. *
-          SOLAR_PANEL_STACK_SIZE, /* Number of indexes in the xStack array. *
-          (void *)1,              /* Parameter passed into the task. *
-          1,                      /* Priority at which the task is created. *
-          blink_stack,            /* Array to use as the task's stack. *
+  if (xTaskCreateStatic(
+          Ctrl_Task_Blink,        // Function that implements the task. *
+          "Blink",                // Text name for the task. *
+          SOLAR_PANEL_STACK_SIZE, // Number of indexes in the xStack array. *
+          (void *)1,              // Parameter passed into the task. *
+          1,                      // Priority at which the task is created. *
+          blink_stack,            // Array to use as the task's stack. *
           &blink_task) == NULL)
   {
     Serial_String_New_Line("error creadno tarea1");
-  }*/
+  }
+
+
 
   Serial_String_New_Line("create");
 
-  Serial_Put(123);
+  //Serial_Put(123);
 
   // Now the task scheduler, which takes over control of scheduling individual tasks, is automatically started.
-  Task_Start_Scheduler(); // Initialise and run the FreeRTOS scheduler. Execution should never return to here.
-}
+  vTaskStartScheduler(); // Initialise and run the FreeRTOS scheduler. Execution should never return to here.
 
-void vApplicationIdleHook(void) __attribute__((weak));
-
-void vApplicationIdleHook(void)
-{
-}
-
-void delay3(unsigned long ms)
-{
-}
-
-void vApplicationMallocFailedHook(void) __attribute__((weak));
-
-void vApplicationMallocFailedHook(void)
-{
-}
-
-void vApplicationStackOverflowHook(TaskHandle_t xTask,
-                                   char *pcTaskName) __attribute__((weak));
-
-void vApplicationStackOverflowHook(TaskHandle_t xTask __attribute__((unused)),
-                                   char *pcTaskName __attribute__((unused)))
-{
-  Serial_String_New_Line("overflow");
-}
-
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   configSTACK_DEPTH_TYPE *puxIdleTaskStackSize) __attribute__((weak));
-
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   configSTACK_DEPTH_TYPE *puxIdleTaskStackSize)
-{
-  static StaticTask_t xIdleTaskTCB;
-  static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
-
-  *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
-  *ppxIdleTaskStackBuffer = uxIdleTaskStack;
-  *puxIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+  for (;;) {
+  }
 }

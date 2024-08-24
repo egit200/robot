@@ -853,7 +853,7 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskDelay vTaskDelay
  * \ingroup TaskCtrl
  */
-void Task_Delay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
+void vTaskDelay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1513,7 +1513,7 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskStartScheduler vTaskStartScheduler
  * \ingroup SchedulerControl
  */
-void Task_Start_Scheduler( void ) PRIVILEGED_FUNCTION;
+void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
