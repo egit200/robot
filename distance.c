@@ -34,7 +34,7 @@ void Distance_Sensor_Init()
         "panel",                /* Text name for the task. */
         SOLAR_PANEL_STACK_SIZE, /* Number of indexes in the xStack array. */
         (void *)1,              /* Parameter passed into the task. */
-        tskIDLE_PRIORITY,       /* Priority at which the task is created. */
+        tskIDLE_PRIORITY+2,       /* Priority at which the task is created. */
         distance_sensor_stack,  /* Array to use as the task's stack. */
         &distance_sensor_task);
 }

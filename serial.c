@@ -64,7 +64,7 @@ inline void Serial_Char(unsigned char data)
 	// portENABLE_INTERRUPTS();
 }
 
-inline void Serial_Break()
+inline void Serial_New_Line()
 {
 	Serial_Char(10); // LF
 					 //	Serial_Char(13); // CR
@@ -81,7 +81,7 @@ void Serial_String_New_Line(char *s)
 	while (*s != '\0')
 		Serial_Char(*s++);
 
-	Serial_Break();
+	Serial_New_Line();
 }
 
 void Serial_Put(uint8_t number)

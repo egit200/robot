@@ -34,7 +34,7 @@ void Battery_Monitor_Init()
         "bat",                  /* Text name for the task. */
         SOLAR_PANEL_STACK_SIZE, /* Number of indexes in the xStack array. */
         (void *)1,              /* Parameter passed into the task. */
-        tskIDLE_PRIORITY,       /* Priority at which the task is created. */
+        tskIDLE_PRIORITY+1,       /* Priority at which the task is created. */
         battery_monitor_stack,  /* Array to use as the task's stack. */
         &battery_monitor_task);
 }
@@ -69,7 +69,7 @@ void Battery_Monitor_Task(void *pvParameters) // This is a task.
             }
         }
         Serial_String_New_Line("bat");
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
+        vTaskDelay(5000 / portTICK_PERIOD_MS); // wait for one second
     }
 }
 
